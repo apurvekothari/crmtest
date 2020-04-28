@@ -1,10 +1,13 @@
 from django.db import models
 # Create your models here.
+from django.contrib.auth.models import User
 
 class Customers(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
     phone = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=20, null=True)
+    profile_pic = models.ImageField(default="Capture.PNG", null=True, blank=True)      # from pillow
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
@@ -34,6 +37,8 @@ class Orders(models.Model):
     product = models.ForeignKey(Products, null=True, on_delete=models.SET_NULL)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     status = models.CharField(max_length=200, null=True, choices=STATUS)  # we are using the status value here
-
+    note = models.CharField(max_length=200, null=True)
+    def __str__(self):
+        return self.product.name
 
 
